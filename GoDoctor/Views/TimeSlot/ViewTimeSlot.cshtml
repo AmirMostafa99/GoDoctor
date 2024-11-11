@@ -1,0 +1,50 @@
+﻿@using BusinessAccessLayer.DataViews.TimeSlotView
+@model IEnumerable<TimeSlotView>
+@{
+    ViewData["Title"] = "Time Slots";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Available Time Slots</h2>
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info" role="alert">
+            <i class="fas fa-info-circle me-2"></i> No Time Slots Available
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-hover table-striped table-bordered shadow-sm">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col" class="text-center">Appointment Time</th>
+                        <th scope="col" class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var timeSlot in Model)
+                    {
+                        <tr>
+                            <td class="align-middle text-center">@timeSlot.AppointmentTime.ToString("hh:mm tt")</td>
+                            <td class="text-center">
+                                @if (timeSlot.IsActive)
+                                {
+                                    <a class="btn btn-primary btn-sm" asp-controller="Booking" asp-action="Book" asp-route-TimeSlotId="@timeSlot.Id">
+                                        <i class="fas fa-calendar-check me-1"></i> Book Now
+                                    </a>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-secondary btn-sm" disabled>
+                                        <i class="fas fa-calendar-times me-1"></i> Unavailable
+                                    </button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
